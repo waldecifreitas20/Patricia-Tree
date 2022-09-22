@@ -9,27 +9,6 @@ class PatriciaTree:
         self.nodes: int = 0
         self.root: Node = None
 
-    def clear_display(self):
-        print("\n\n\n")
-        print("\n\n\n")
-        print("\n\n\n")
-        print("\n\n\n")
-        print("\n\n\n")
-        print("\n\n\n")
-        print("\n\n\n")
-
-    def menu(self):
-        self.clear_display()
-        print("---------------Arvore Patricia-------------------")
-        print("Arvore atual: \n")
-        self.print()
-        print("\n")
-        print("4 - Busca")
-        print("3 - Remover")
-        print("2 - Ver Arvore")
-        print("1 - inserir")
-        print("0 - Encerar\n")
-
     def insert(self, word) -> bool:
 
         #Caso a arvore esteja vazia a palavra é inserida na raiz

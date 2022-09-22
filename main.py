@@ -1,5 +1,5 @@
 from modules.tree import PatriciaTree
-
+from modules.Menu import Menu
 
 str1 = {'value' : 'a'}
 str2 = str1
@@ -8,45 +8,46 @@ str1 = 'b'
 str2 = str1
 
 pt = PatriciaTree()
+tela = Menu()
 
 search = 'sal'
 
 
 #   -----INICIO MENU------
-opcao = None
+acao = None
 while True:
-    print("inicio laço!!!")
-    if opcao == None:
-        pt.menu()
-        opcao = int(input("Opção:"))
+    if acao == None:
+        tela.opcoes()
+        acao = int(input("Opção:"))
 
-    elif opcao == 1:
-        pt.clear_display()
+    elif acao == 1:
+        tela.clear_display()
+        tela.opcoes()
+        word = str(input("Digite sua palavra:"))
+        pt.insert(word)
+        acao = 4
 
-        print("Arvore atual: \n")
+    elif acao == 2:
+        print("metodo NÂO IMPLEMENTADO")
+        word = str(input("Qual palavra deseja remover:"))
+        #pt.remove(word)
+
+        tela.opcoes()
+        acao = int(input("\nOpção:"))
+        acao = None
+    elif acao == 3:
+        print("BuscaR")
+        word = str(input("Qual palavra deseja BUSCAR:"))
+        pt.search(word)
+        print("metodo NÂO IMPLEMENTADO")
+        acao = int(input("Digite 1 para voltar!"))
+        acao = None
+    elif acao == 4:
         pt.print()
-        print("\n")
-        palavra = str(input("Digite sua palavra:"))
 
-        pt.clear_display()
-        pt.insert(palavra)
-        print("Arvore atual: \n")
-        pt.print()
-        print("\n")
-        print("2 - Ver Arvore")
-        print("1 - inserir")
-        print("0 - Encerar")
-        opcao = int(input("\nOpção:"))
-
-    elif opcao == 2:
-        pt.clear_display()
-        print("Arvore atual: \n")
-        pt.print()
-        print("\n")
-        print("1 - voltar")
-        opcao = int(input("\nOpção:"))
-        opcao = None
-    if opcao == 0:
+        acao = int(input("Digite 1 para voltar!"))
+        acao = None
+    if acao == 0:
         break
 #   -----FIM MENU------
 
