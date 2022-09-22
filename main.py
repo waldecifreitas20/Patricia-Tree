@@ -11,9 +11,9 @@ pt = PatriciaTree()
 
 search = 'sal'
 
+pt.insert('romane')
 pt.insert('rubicon')
 pt.insert('romanus')
-pt.insert('romane')
 
 pt.insert('rubens')
 pt.insert('ruber')

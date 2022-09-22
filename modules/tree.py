@@ -9,113 +9,141 @@ class PatriciaTree:
         self.nodes: int = 0
         self.root: Node = None
 
-    def insert(self, word):
+    def insert(self, word) -> bool:
 
-        # Caso 1: Arvore vazia
+        #Caso a arvore esteja vazia a palavra é inserida na raiz
         if self.root == None:
             self.root = Leaf(word)
             return True
 
         else:
-            node = self.root
+            currentNode = self.root
             while True:
 
-                # Caso 2: Node é folha
-                if helper.isLeaf(node):
+                # Verifica se o Nó é folha
+                if helper.isLeaf(currentNode):
 
-                    if node.value == word:
-                        return False # Valor nao pode haver valores iguais na arvore
+                    if currentNode.value == word:
+                        return False # Nao podem haver valores iguais na arvore
                     else:
 
-                        nodeValue = node.value
-                        index = helper.getMismatchIndex(nodeValue, word) #indice do primeiro caracter divergente
+                        nodeValue = currentNode.value
+                        
+                        # indice do primeiro caracter divergente
+                        index = helper.getMismatchIndex(nodeValue, word) 
 
-                        nodeChar = helper.getCharAtIndex(nodeValue, index) # caracter ja presente
+                        # Obtem os caracteres divergentes
+                        nodeChar = helper.getCharAtIndex(nodeValue, index) 
                         wordChar = helper.getCharAtIndex(word, index)
+
                         char = helper.getSmaller(nodeChar, wordChar)
 
-                        IS_ROOT = node.ancestor == None
 
+                        IS_ROOT = currentNode.ancestor == None
+
+                        # Verfica se o Nó atual é raiz da arvore
                         if IS_ROOT:
+
+                            # Nó raiz vira Nó interno
                             self.root = InternNode(index, char)
-                            node = self.root
+                       
 
-                            if nodeChar > wordChar:
-                                node.leftChild = Leaf(word)
-                                node.rightChild = Leaf(nodeValue)
-
+                            # Define as novas palavras como filhas folha da raiz 
                             if nodeChar < wordChar:
-                                node.leftChild = Leaf(nodeValue)
-                                node.rightChild = Leaf(word)
-
-                            node.rightChild.ancestor = node
-                            node.leftChild.ancestor = node
+                                self.root.leftChild = Leaf(nodeValue)
+                                self.root.rightChild = Leaf(word)
+                            else:
+                                self.root.leftChild = Leaf(word)
+                                self.root.rightChild = Leaf(nodeValue)
+                            
+                            # Define a raiz como pai das novas folhas
+                            self.root.rightChild.ancestor = self.root
+                            self.root.leftChild.ancestor = self.root
 
                             return True
 
                         else:
-                            IS_LEFT_CHILD = node.ancestor.leftChild.isEquals(node)
+                            # Pai do no atual
+                            ancestor = currentNode.ancestor
+
+                            IS_LEFT_CHILD = ancestor.leftChild.isEquals(currentNode)
                   
+                            # verifica se o Nó atual esta a esquerda de seu pai
                             if IS_LEFT_CHILD:
+
+                                # Nó atual vira Nó interno
+                                ancestor.leftChild = InternNode(index, char)
+
+                                # Nó atual 
+                                currentNode = ancestor.leftChild
+
+                                # Define as novas palavras como filhas folhas do Nó 
+                                if nodeChar >= wordChar:
+                                    currentNode.leftChild = Leaf(word)
+                                    currentNode.rightChild = Leaf(nodeValue)
+                                else:
+                                    currentNode.leftChild = Leaf(nodeValue)
+                                    currentNode.rightChild = Leaf(word)
+                                  
+                                # Define o pai das novas folhas
+                                currentNode.leftChild.ancestor = currentNode
+                                currentNode.rightChild.ancestor = currentNode
+
+                            else: # Filho esta a direita de seu pai
                                 
-                                node.ancestor.leftChild = InternNode(index, char)
+                                # Nó atual vira Nó interno
+                                ancestor.rightChild = InternNode(index, char)
 
+                                # Nó atual
+                                currentNode = ancestor.rightChild
+
+                                # Define as novas palavras como filhas folhas do Nó 
                                 if nodeChar > wordChar:
-                                    node.ancestor.leftChild.leftChild = Leaf(word)
-                                    node.ancestor.leftChild.rightChild = Leaf(nodeValue)
-
-                                if nodeChar < wordChar:
-                                    node.ancestor.leftChild.leftChild = Leaf(nodeValue)
-                                    node.ancestor.leftChild.rightChild = Leaf(word)
+                                    currentNode.leftChild = Leaf(word)
+                                    currentNode.rightChild = Leaf(nodeValue)
+                                else:
+                                    currentNode.leftChild = Leaf(nodeValue)
+                                    currentNode.rightChild = Leaf(word)
                                   
-                                node.ancestor.leftChild.leftChild.ancestor = node.ancestor.leftChild
-                                node.ancestor.leftChild.rightChild.ancestor = node.ancestor.leftChild
-                            else:
-                                node.ancestor.rightChild = InternNode(index, char)
-
-                                if nodeChar > wordChar:
-                                    node.ancestor.rightChild.leftChild = Leaf(word)
-                                    node.ancestor.rightChild.rightChild = Leaf(nodeValue)
-
-                                if nodeChar < wordChar:
-                                    node.ancestor.rightChild.leftChild = Leaf(nodeValue)
-                                    node.ancestor.rightChild.rightChild = Leaf(word)
-                                  
-                                node.ancestor.rightChild.leftChild.ancestor = node.ancestor.rightChild
-                                node.ancestor.rightChild.rightChild.ancestor = node.ancestor.rightChild
+                                # Define o pai das novas folhas
+                                currentNode.leftChild.ancestor = currentNode
+                                currentNode.rightChild.ancestor = currentNode
 
                             break
-                else:
-                    nodeChar = node.dismatchedChar
+                
+                else: # Nó atual é interno
 
-                    index = node.indexToGo
+                    index = currentNode.indexToGo
+                    nodeChar = currentNode.dismatchedChar
                     wordChar = helper.getCharAtIndex(word, index)
 
+                    # Define para qual lado da arvore seguir
                     if wordChar > nodeChar:
-                        node = node.rightChild
+                        currentNode = currentNode.rightChild
                     else:
-                        node = node.leftChild
+                        currentNode = currentNode.leftChild
 
 
-
-    def search(self, word):
+    #Retorna o Nó da arvore caso encontre ou -1 caso o Nó nao exista
+    def search(self, word) -> Node or -1:
 
         node = self.root
 
-      
         while True:
-        
+            #Verifica se o No é folha
             if helper.isLeaf(node):
                 if node.value == word: 
                     return node
                 else:
                     return -1
             
-            else:
+            else: 
+                #Caso o Nó atual seja interno o algoritmo continua a busca
                 index = node.indexToGo
                 nodeChar = node.dismatchedChar
                 wordChar = helper.getCharAtIndex(word, index)
                             
+                #Verfica qual direcao da arvore ir
                 if nodeChar < wordChar:
                     node = node.rightChild
                 else:
@@ -129,7 +157,9 @@ class PatriciaTree:
             self._printTree(self.root, 'Root')
 
     def _printTree(self, node: Node, subtree):
+
         if Node is not None:          
+            
             if helper.isLeaf(node):
                 print(f'Node -> {node.value} | Path: {subtree} ')
 
