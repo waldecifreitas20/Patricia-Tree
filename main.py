@@ -19,6 +19,7 @@ pt.insert('rubens')
 pt.insert('ruber')
 
 pt.print()
+print("teste ")
 
 
 
