@@ -1,3 +1,5 @@
+import cmd
+
 from modules.tree import PatriciaTree
 from modules.menu import Menu
 
@@ -7,21 +9,16 @@ str1 = 'b'
 str2 = str1
 pt = PatriciaTree()
 search = 'sal'
-pt.insert('romane')
 
-pt.print()
-tela = Menu(pt)
+tela = Menu()
 
+acao = 5
+while acao != 0:
 
-acao = None
-while True:
-    if acao == None:
-        tela.opcoes()
-        acao = int(input("Opção:"))
+    tela.options(pt)
+    acao = int(input("Opção:"))
 
-    elif acao == 1:
-        tela.clear_display()
-        tela.opcoes()
+    if acao == 1:
         word = str(input("Digite sua palavra:"))
         pt.insert(word)
         acao = 4
@@ -29,23 +26,12 @@ while True:
     elif acao == 2:
         print("metodo NÂO IMPLEMENTADO")
         word = str(input("Qual palavra deseja remover:"))
-        #pt.remove(word)
-
-        tela.opcoes()
-        acao = int(input("\nOpção:"))
-        acao = None
+        pt.remove(word)
     elif acao == 3:
-        print("BuscaR")
-        word = str(input("Qual palavra deseja BUSCAR:"))
-        pt.search(word)
-        print("metodo NÂO IMPLEMENTADO")
-        acao = int(input("Digite 1 para voltar!"))
-        acao = None
-    elif acao == 4:
-        pt.print()
 
-        acao = int(input("Digite 1 para voltar!"))
-        acao = None
+    elif acao == 4:
+
+
     if acao == 0:
         break
 #   -----FIM MENU------

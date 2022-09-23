@@ -1,30 +1,43 @@
-import platform
-from modules import tree
+import os
+
 from modules.nodes.internNode import *
 from modules.nodes.leaf import *
 from modules import helper
+from modules import tree
+import platform
+
 
 so = platform.system()
 
 
 class Menu:
-
-
     def cls(self):
-        if so == 'Windows':
-            print("WIN 10")
-        elif so == 'Linux':
-            print("LUnux")
-        else:
-            print("MAC")
 
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+        #if so == 'Windows':
+        #    os.system('clear')
+        #elif so == 'Linux':
+         #   os.system('cls') or None
+        #else:
+        #    os.system('cls') or None
 
-    def print(tree: tree) -> None:
+    def options(self, tree: tree):
+        self.cls()
+        print("---------------Arvore Patricia-------------------")
+        print("Arvore atual: \n")
+        self.print(tree)
+
+        print("3 - Buscar")
+        print("2 - Remover")
+        print("1 - inserir")
+        print("0 - Encerar\n")
+
+    def print(self, tree: tree) -> None:
 
         if tree.root == None:
             print('Arvore Vazia')
         else:
-            tree._printTree(tree.root, 'Root')
+            self._printTree(tree.root, 'Root')
 
     def _printTree(self, node: Node, subtree) -> None:
 
