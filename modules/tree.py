@@ -73,9 +73,10 @@ class PatriciaTree:
                                 # Nó atual vira Nó interno
                                 ancestor.leftChild = InternNode(index, char)
                                 
-                                # Nó atual
+                                # Atualiza valores Nó atual
                                 currentNode = ancestor.leftChild
                                 currentNode.ancestor = ancestor
+
                                 # Define as novas palavras como filhas folhas do Nó
                                 if nodeChar >= wordChar:
                                     currentNode.leftChild = Leaf(word)
@@ -93,9 +94,10 @@ class PatriciaTree:
                                 # Nó atual vira Nó interno
                                 ancestor.rightChild = InternNode(index, char)
 
-                                # Nó atual
+                                # Atualiza valores Nó atual
                                 currentNode = ancestor.rightChild
                                 currentNode.ancestor = ancestor
+
                                 # Define as novas palavras como filhas folhas do Nó
                                 if nodeChar > wordChar:
                                     currentNode.leftChild = Leaf(word)
@@ -148,9 +150,10 @@ class PatriciaTree:
                 else:
                     node = node.leftChild
 
-    def remove(self, word):
+    def remove(self, word) -> bool:
         nodeSearched = self.search(word)
 
+        # Nó nao existe
         if nodeSearched == -1:
             return False
 
@@ -162,23 +165,51 @@ class PatriciaTree:
 
         # Caso o pai do Nó removido seja raiz
         elif ancestor.isEquals(self.root):
-            IS_LEFT_CHILD = ancestor.isLeftChild(nodeSearched)
+            IS_LEFT_CHILD = self.root.isLeftChild(nodeSearched)
 
-            if IS_LEFT_CHILD:  # No removido esta a esquerda de seu pai
-                ancestor.leftChild = None
-                ancestor = ancestor.rightChild
+            # Remove o Nó e raiz recebe Nó sucessor
+            if IS_LEFT_CHILD:  
+                self.root.leftChild = None
+                self.root = self.root.rightChild
 
-            else:  # No removido esta a direita de seu pai
-                ancestor.rightChild = None
-                ancestor = ancestor.leftChild
+            else:
+                self.root.rightChild = None
+                self.root = self.root.leftChild
 
-            ancestor.ancestor = None
-        
+            self.root.ancestor = None
+
+      
         else:
             IS_LEFT_CHILD = ancestor.isLeftChild(nodeSearched)
 
             # No removido esta a esquerda de seu pai
-            print(ancestor)
+            if IS_LEFT_CHILD:
+                # Remove o Nó
+                ancestor.leftChild = None
+                # Avo do Nó removido
+                grandFather = ancestor.ancestor
+                # Nó sucessor recebe novo pai
+                ancestor.rightChild.ancestor = grandFather
+                
+                # Avo do Nó removido aponta para o novo filho
+                if grandFather.isLeftChild(ancestor):
+                    grandFather.leftChild = ancestor.rightChild                    
+                else:
+                    grandFather.rightChild = ancestor.rightChild
+            else:
+                # Remove o Nó
+                ancestor.rightChild = None
+                # Avo do Nó removido
+                grandFather = ancestor.ancestor
+                # Nó sucessor recebe novo pai
+                ancestor.leftChild.ancestor = grandFather
+                
+                # Avo do Nó removido aponta para o novo filho
+                if grandFather.isLeftChild(ancestor):
+                    grandFather.leftChild = ancestor.leftChild                    
+                else:
+                    grandFather.rightChild = ancestor.leftChild
+        return True
             
 
     def print(self) -> None:
