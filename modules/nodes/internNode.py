@@ -10,8 +10,6 @@ class InternNode(Node):
         self.rightChild = None
         super().__init__()
 
-    def isEquals(self, node) -> bool:
-        return super().isEquals(node)
 
     def hasChildren(self) -> bool: return self.hasLeftChild() or self.hasRightChild()
 
@@ -19,4 +17,8 @@ class InternNode(Node):
 
     def hasRightChild(self) -> bool: return self.right is not None
 
-    def getLength(self) -> int: return len(self.value)
+    def isLeftChild(self, node) -> bool: 
+        return self.leftChild.isEquals(node)
+
+    def isRightChild(self, node) -> bool: 
+        return self.rightChild.isEquals(node)

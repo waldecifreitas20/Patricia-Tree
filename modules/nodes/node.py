@@ -6,6 +6,6 @@ class Node(ABC):
     def __init__(self):
         self.ancestor: InternNode = None
     
-    @abstractmethod
+
     def isEquals(self, node) -> bool:
-        pass
+        return id(self) == id(node)
