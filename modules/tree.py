@@ -72,10 +72,10 @@ class PatriciaTree:
 
                                 # Nó atual vira Nó interno
                                 ancestor.leftChild = InternNode(index, char)
-
+                                
                                 # Nó atual
                                 currentNode = ancestor.leftChild
-
+                                currentNode.ancestor = ancestor
                                 # Define as novas palavras como filhas folhas do Nó
                                 if nodeChar >= wordChar:
                                     currentNode.leftChild = Leaf(word)
@@ -95,7 +95,7 @@ class PatriciaTree:
 
                                 # Nó atual
                                 currentNode = ancestor.rightChild
-
+                                currentNode.ancestor = ancestor
                                 # Define as novas palavras como filhas folhas do Nó
                                 if nodeChar > wordChar:
                                     currentNode.leftChild = Leaf(word)
@@ -177,6 +177,9 @@ class PatriciaTree:
         else:
             IS_LEFT_CHILD = ancestor.isLeftChild(nodeSearched)
 
+            # No removido esta a esquerda de seu pai
+            print(ancestor)
+            
 
     def print(self) -> None:
 
@@ -190,9 +193,9 @@ class PatriciaTree:
         if Node is not None:
 
             if helper.isLeaf(node):
-                print(
-                    f'Node -> {node.value} | Path: {subtree}  | Ancestor: {node.ancestor is not None}')
+                print(f'Node -> {node.value} | Path: {subtree}  | Ancestor: {node.ancestor is not None}')
 
             elif isinstance(node, InternNode):
+                print(f'Node -> ({node.indexToGo},{node.dismatchedChar}) | Path: {subtree}  | Ancestor: {node.ancestor is not None}')
                 self._printTree(node.leftChild, subtree + ' -> left')
                 self._printTree(node.rightChild, subtree + ' -> right')
