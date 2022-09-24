@@ -210,23 +210,4 @@ class PatriciaTree:
                 else:
                     grandFather.rightChild = ancestor.leftChild
         return True
-            
 
-    def print(self) -> None:
-
-        if self.root == None:
-            print('Arvore Vazia')
-        else:
-            self._printTree(self.root, 'Root')
-
-    def _printTree(self, node: Node, subtree) -> None:
-
-        if Node is not None:
-
-            if helper.isLeaf(node):
-                print(f'Node -> {node.value} | Path: {subtree}  | Ancestor: {node.ancestor is not None}')
-
-            elif isinstance(node, InternNode):
-                print(f'Node -> ({node.indexToGo},{node.dismatchedChar}) | Path: {subtree}  | Ancestor: {node.ancestor is not None}')
-                self._printTree(node.leftChild, subtree + ' -> left')
-                self._printTree(node.rightChild, subtree + ' -> right')

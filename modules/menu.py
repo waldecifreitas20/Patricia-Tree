@@ -1,14 +1,10 @@
-import os
-
 from modules.nodes.internNode import *
 from modules.nodes.leaf import *
 from modules import helper
 from modules import tree
 import platform
 
-
 so = platform.system()
-
 
 class Menu:
     def cls(self):
@@ -21,23 +17,30 @@ class Menu:
         #else:
         #    os.system('cls') or None
 
+    #Imprime um cabeçalho com a arvore atualizada e opções de menu
     def options(self, tree: tree):
         self.cls()
-        print("---------------Arvore Patricia-------------------")
+        print("-------------------Arvore Patricia---------------------")
         print("Arvore atual: \n")
-        self.print(tree)
+        self.print_tree_only(tree)
+        #U+274C
+        print("\033[0:30:47m[0]Encerar\033[m", end="")
+        print("\033[0:32:40m[1]inserir\033[m", end="")
+        if tree.root != None:
+            print("\033[0:31:40m[2]Remover\033[m", end="")
+            print("\033[0:33:40m[3]Buscar\033[m", end="")
+        print("\033[0:36:40m[4]Ver Arvore\033[m")
 
-        print("3 - Buscar")
-        print("2 - Remover")
-        print("1 - inserir")
-        print("0 - Encerar\n")
-
-    def print(self, tree: tree) -> None:
-
+    #imprime apenas a arvore(sem opções de menu)
+    def print_tree_only(self, tree: tree) -> None:
+        self.cls()
+        print("-------------------Arvore Patricia---------------------")
+        print("Arvore atual: \n")
         if tree.root == None:
-            print('Arvore Vazia')
+            print('\033[0:31:40m***Arvore Vazia***\033[m')
         else:
             self._printTree(tree.root, 'Root')
+        print("\n")
 
     def _printTree(self, node: Node, subtree) -> None:
 
