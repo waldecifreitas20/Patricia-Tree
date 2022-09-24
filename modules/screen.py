@@ -2,28 +2,25 @@ from modules.nodes.internNode import *
 from modules.nodes.leaf import *
 from modules import helper
 from modules import tree
-import platform
+from os import (name as operationalSystem, system as command)
 
-so = platform.system()
+WINDOWNS = 'nt'
 
-class Menu:
-    def cls(self):
+class Screen:
 
-        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-        #if so == 'Windows':
-        #    os.system('clear')
-        #elif so == 'Linux':
-         #   os.system('cls') or None
-        #else:
-        #    os.system('cls') or None
+    def clearScreen(self):
+        if operationalSystem == WINDOWNS:
+            command('cls')
+        else:
+            command('clear')
 
     #Imprime um cabeçalho com a arvore atualizada e opções de menu
     def options(self, tree: tree):
-        self.cls()
+        self.clearScreen()
         print("-------------------Arvore Patricia---------------------")
         print("Arvore atual: \n")
-        self.print_tree_only(tree)
-        #U+274C
+        self.printTree(tree)
+
         print("\033[0:30:47m[0]Encerar\033[m", end="")
         print("\033[0:32:40m[1]inserir\033[m", end="")
         if tree.root != None:
@@ -32,10 +29,11 @@ class Menu:
         print("\033[0:36:40m[4]Ver Arvore\033[m")
 
     #imprime apenas a arvore(sem opções de menu)
-    def print_tree_only(self, tree: tree) -> None:
-        self.cls()
+    def printTree(self, tree: tree) -> None:
+        self.clearScreen()
         print("-------------------Arvore Patricia---------------------")
         print("Arvore atual: \n")
+        
         if tree.root == None:
             print('\033[0:31:40m***Arvore Vazia***\033[m')
         else:
